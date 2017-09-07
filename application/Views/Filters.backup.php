@@ -28,6 +28,36 @@ public static function localizednumber($number, $style = 'decimal', $type = 'def
     return $formatter->format($number, $typeValues[$type]);
 }
 
+public static function localizeddate( $date, $dateFormat = 'medium', $timeFormat = 'medium', $locale = null, $timezone = null, $format = null, $calendar = 'gregorian')
+{
+    //$date = twig_date_converter($env, $date, $timezone);
+    $formatValues = array(
+        'none' => \IntlDateFormatter::NONE,
+        'short' => \IntlDateFormatter::SHORT,
+        'medium' => \IntlDateFormatter::MEDIUM,
+        'long' => \IntlDateFormatter::LONG,
+        'full' => \IntlDateFormatter::FULL,
+    );
+
+    //todo: fetch default locale if not provided 
+    $locale= $locale ?? 'en-US';
+
+    //todo: fetch default timezone if not provided 
+    $timezone= $timezone ?? 'America/Los_Angeles';
+
+     //todo: fetch default timezone if not provided 
+    $format= $format ?? '"MM/dd/yyyy';
+
+    $formatter = \IntlDateFormatter::create(
+        $locale,
+        $formatValues[$dateFormat],
+        $formatValues[$timeFormat],
+        $timezone,
+        'gregorian' === $calendar ? \IntlDateFormatter::GREGORIAN : \IntlDateFormatter::TRADITIONAL,
+        $format
+    );
+    return $formatter->format(strtotime($date));//todo:something fishy
+}
 
 public static function localizedcurrency($number, $currency = null, $locale = null)
 {
@@ -37,6 +67,7 @@ public static function localizedcurrency($number, $currency = null, $locale = nu
     $formatter = self::getNumberFormatter($locale, 'currency');
     return $formatter->formatCurrency($number, $currency);
 }
+
 
 private static function getNumberFormatter($locale , $style):\NumberFormatter
 {

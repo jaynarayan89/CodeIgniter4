@@ -23,7 +23,11 @@ class View extends \CodeIgniter\Config\View
 	 *  { title|esc(js) }
 	 *  { created_on|date(Y-m-d)|esc(attr) }
 	 */
-	public $filters = [];
+	public $filters = [
+              'localizednumber'        => '\App\Views\Filters::localizednumber',
+				'localizeddate'        => '\App\Views\Filters::localizeddate',
+				'localizedcurrency'        => '\App\Views\Filters::localizedcurrency',
+	];
 
     /**
      * Parser Plugins provide a way to extend the functionality provided
